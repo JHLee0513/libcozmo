@@ -4,6 +4,13 @@ libcozmo is a C++ library for simulating and running [Cozmo](https://anki.com/en
 
 ## Installation
 
+#PyTorch/libtorch
+$ sudo pip3 install torch torchvision
+
+For libtorch you need to run export Torch_DIR=/home/username/path/to/python/site-packages/torch/share/cmake/Torch/ for it to recognize where torch is located during build
+
+e.g. Torch_DIR=/home/username/.local/lib/python3.5/site-packages/torch/share/cmake/Torch/
+
 Install [ROS Kinetic](http://wiki.ros.org/kinetic/Installation/Ubuntu) and then install the following dependencies:
 ```shell
 $ sudo add-apt-repository ppa:personalrobotics/ppa

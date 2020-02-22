@@ -1,12 +1,14 @@
 cmake_minimum_required(VERSION 3.0)
 project(libcozmo)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TORCH_CXX_FLAGS} -std=c++11")
 set(CMAKE_BUILD_TYPE Release)
+set(Torch_DIR /home/joonh/cozmo_ws/src)
 
-set(PYBIND11_PYTHON_VERSION 3.5)
-find_package(PythonInterp 3.5 REQUIRED)
-find_package(PythonLibs 3.5 REQUIRED)
+set(PYBIND11_PYTHON_VERSION 3.5.2)
+find_package(PythonInterp 3.5.2 REQUIRED)
+find_package(PythonLibs 3.5.2 REQUIRED)
+find_package(Torch REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS 
   roscpp 
@@ -122,6 +124,9 @@ target_link_libraries(test_framework ${TEST_LIBS})
 # EXECUTABLES       
 ################################################################################
 
+add_executable(torch_example src/examples/torch_example.cpp)
+target_link_libraries(torch_example "${TORCH_LIBRARIES}")
+set_property(TARGET torch_example PROPERTY CXX_STANDARD 14)
 
 add_executable(rviz_example src/examples/rviz_example.cpp)
 target_include_directories(rviz_example PRIVATE
@@ -149,6 +154,18 @@ target_link_libraries(execute_traj
   cozmo
   ${aikido_LIBRARIES}
 )
+
+add_executable(run_model src/examples/model_example.cpp)
+target_include_directories(run_model PRIVATE
+  ${aikido_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
+)
+target_link_libraries(run_model
+  cozmo
+  ${aikido_LIBRARIES}
+  ${catkin_LIBRARIES}
+)
+
 
 ################################################################################
 # PYBIND 
