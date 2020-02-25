@@ -60,8 +60,6 @@ add_library(cozmo SHARED
   src/distance/SE2.cpp
   src/distance/translation.cpp
   src/distance/orientation.cpp
-  src/model/GPRModel.cpp
-  src/model/ScikitLearnFramework.cpp
 )
 
 target_include_directories(cozmo PUBLIC
@@ -114,12 +112,6 @@ target_link_libraries(test_linspace ${TEST_LIBS})
 catkin_add_gtest(test_distance tests/distance/test_distance.cpp)
 target_link_libraries(test_distance ${TEST_LIBS})
 
-catkin_add_gtest(test_model tests/model/test_GPRModel.cpp)
-target_link_libraries(test_model ${TEST_LIBS})
-
-catkin_add_gtest(test_framework tests/model/test_ScikitLearnFramework.cpp)
-target_link_libraries(test_framework ${TEST_LIBS})
-
 ################################################################################
 # EXECUTABLES       
 ################################################################################
@@ -154,18 +146,6 @@ target_link_libraries(execute_traj
   cozmo
   ${aikido_LIBRARIES}
 )
-
-add_executable(run_model src/examples/model_example.cpp)
-target_include_directories(run_model PRIVATE
-  ${aikido_INCLUDE_DIRS}
-  ${catkin_INCLUDE_DIRS}
-)
-target_link_libraries(run_model
-  cozmo
-  ${aikido_LIBRARIES}
-  ${catkin_LIBRARIES}
-)
-
 
 ################################################################################
 # PYBIND 
