@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2019,  Vinitha Ranganeni
+// Copyright (c) 2019,  Brian Lee, Vinitha Ranganeni
 // All rights reserved.
 //
 // Redistribution and use in source and binary forms, with or without
@@ -27,33 +27,55 @@
 // POSSIBILITY OF SUCH DAMAGE.
 ////////////////////////////////////////////////////////////////////////////////
 
-#include <Eigen/Geometry>
-#include <gtest/gtest.h>
-#include <stdexcept>
-#include <Python.h>
-#include "model/ScikitLearnFramework.hpp"
+#ifndef INCLUDE_MODEL_TORCHMODEL_HPP_
+#define INCLUDE_MODEL_TORCHMODEL_HPP_
+
+#include <Eigen/Dense>
+#include <torch/torch.h>
 
 namespace libcozmo {
 namespace model {
-namespace test {
 
-TEST(ScikitLearnFrameworkTest, ThrowingExeceptionTest) {
-    try {
-        auto framework = ScikitLearnFramework("");
-    } catch(std::invalid_argument const& error) {
-        EXPECT_EQ(error.what(),
-            std::string("[ScikitLearnFramework] Invalid model_path"));
-    }
-}
+// Simple Linear Model implemented in Torch
+struct LinearRegression : torch::nn::Module {
+  LinearRegression() {
+    fc = register_module("fc", torch::nn::Linear(3, 2));
+  }
 
-}  // namespace test
+  // Implement the Net's algorithm.
+  torch::Tensor forward(torch::Tensor x) {
+    // Use one of many tensor manipulation functions.
+    x = fc->forward(x);
+    return x;
+  }
+
+  // Use one of many "standard library" modules.
+  torch::nn::Linear fc{nullptr};
+};
+
+/// LinearRegression model for all model types. When using this class or its derived
+/// classes in a script you must wrap the code with Py_Initialize() and
+/// Py_Finalize();
+class TorchModel {
+ public:
+    /// Gets the end state after applying the given action on the input state
+    /// Input vectors vary based on derived class
+    ///
+    /// \param input_action Given action vector
+    /// \param input_state Given state vector
+    /// \param[out] output_state vector
+    /// \return True if prediction successfully calculated; false otherwise;
+    bool predict_state(
+        const Eigen::VectorXd& input_action,
+        const Eigen::VectorXd& input_state,
+        Eigen::VectorXd* output_state) const;
+
+    bool load_weights(const str path);
+
+ 
+};
+
 }  // namespace model
 }  // namespace libcozmo
 
-int main(int argc, char **argv) {
-    Py_Initialize();
-    ::testing::InitGoogleTest(&argc, argv);
-    const auto results = RUN_ALL_TESTS();
-    Py_Finalize();
-    return results;
-}
+#endif  // INCLUDE_MODEL_MODEL_HPP_
