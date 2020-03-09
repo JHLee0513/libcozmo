@@ -3,10 +3,12 @@ project(libcozmo)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(CMAKE_BUILD_TYPE Release)
+set(Torch_DIR /home/joonh/cozmo_ws/src)
 
 set(PYBIND11_PYTHON_VERSION 3.5)
 find_package(PythonInterp 3.5 REQUIRED)
 find_package(PythonLibs 3.5 REQUIRED)
+find_package(Torch REQUIRED)
 
 find_package(catkin REQUIRED COMPONENTS 
   roscpp 
@@ -60,6 +62,7 @@ add_library(cozmo SHARED
   src/distance/orientation.cpp
   src/model/GPRModel.cpp
   src/model/ScikitLearnFramework.cpp
+  src/model/TorchModel.cpp
 )
 
 target_include_directories(cozmo PUBLIC
@@ -81,7 +84,7 @@ target_link_libraries(
   PUBLIC 
     ${DART_LIBRARIES} 
     ${aikido_LIBRARIES}
-    ${PYTHON_LIBRARIES} 
+    ${PYTHON_LIBRARIES}
 )
 
 ################################################################################
