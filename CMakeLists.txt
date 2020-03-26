@@ -58,8 +58,6 @@ add_library(cozmo SHARED
   src/actionspace/GenericActionSpace.cpp
   src/statespace/SE2.cpp
   src/distance/SE2.cpp
-  src/distance/translation.cpp
-  src/distance/orientation.cpp
   src/model/TorchModel.cpp
 )
 
