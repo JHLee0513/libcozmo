@@ -60,6 +60,7 @@ add_library(cozmo SHARED
   src/distance/SE2.cpp
   src/distance/translation.cpp
   src/distance/orientation.cpp
+  src/model/TorchModel.cpp
 )
 
 target_include_directories(cozmo PUBLIC
@@ -81,7 +82,8 @@ target_link_libraries(
   PUBLIC 
     ${DART_LIBRARIES} 
     ${aikido_LIBRARIES}
-    ${PYTHON_LIBRARIES} 
+    ${PYTHON_LIBRARIES}
+    ${TORCH_LIBRARIES} 
 )
 
 ################################################################################
