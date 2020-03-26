@@ -86,4 +86,4 @@ class TorchModel {
 }  // namespace model
 }  // namespace libcozmo
 
-#endif  // INCLUDE_MODEL_MODEL_HPP_
+#endif  // INCLUDE_MODEL_TORCHMODEL_HPP_
